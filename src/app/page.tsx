@@ -8,7 +8,7 @@ import DrumMachine from "@/components/DrumMachine";
 export default function Home() {
 
   return (
-    <main className="flex min-h-screen w-full mx-auto flex-col items-center justify-between p-24">
+    <main className="flex w-full flex-col items-center justify-between p-6">
       <Tabs defaultValue="compoundInterestCalculator" className="flex w-full mx-auto flex-col">
         <TabsList className="w-full max-w-3xl mx-auto">
           <TabsTrigger value="compoundInterestCalculator">複利計算</TabsTrigger>
