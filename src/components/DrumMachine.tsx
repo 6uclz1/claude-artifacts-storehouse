@@ -5,9 +5,10 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from "@/components/ui/slider";
 
-const audioContext: any = new (window.AudioContext || window.AudioContext)();
 
-const createDrumSound = (type: string) => {
+
+const createDrumSound = (type: string, audioContext: any) => {
+
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     oscillator.connect(gainNode);
@@ -44,11 +45,18 @@ const DrumMachine = () => {
     const [playing, setPlaying] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
     const [bpm, setBpm] = useState(120);
+    const [audioContext, setAudioContext]: any = useState();
     const [pattern, setPattern]: any = useState({
         kick: new Array(16).fill(false),
         snare: new Array(16).fill(false),
         hihat: new Array(16).fill(false),
     });
+
+    useEffect(() => {
+        // @ts-ignore
+        const ac: any = new (window.AudioContext || window.webkitAudioContext)();
+        setAudioContext(ac);
+    }, []);
 
     const timerRef: any = useRef(null);
 
@@ -56,11 +64,11 @@ const DrumMachine = () => {
         Object.entries(pattern).forEach(([drum, steps]) => {
             // @ts-ignore
             if (steps[currentStep]) {
-                createDrumSound(drum);
+                createDrumSound(drum, audioContext);
             }
         });
         setCurrentStep((prevStep) => (prevStep + 1) % 16);
-    }, [currentStep, pattern]);
+    }, [currentStep, pattern, audioContext]);
 
     useEffect(() => {
         if (playing) {
@@ -81,7 +89,7 @@ const DrumMachine = () => {
     };
 
     const togglePlay = () => {
-        if (!playing) {
+        if (!playing && audioContext) {
             audioContext.resume();
         }
         setPlaying(!playing);
