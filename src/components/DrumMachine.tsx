@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Play, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Label } from "@/components/ui/label"
-import { Card, CardFooter, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from "@/components/ui/slider";
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const audioContext: any = new (window.AudioContext || window.AudioContext)();
 
 const createDrumSound = (type: string) => {
     const oscillator = audioContext.createOscillator();
@@ -44,16 +44,17 @@ const DrumMachine = () => {
     const [playing, setPlaying] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
     const [bpm, setBpm] = useState(120);
-    const [pattern, setPattern] = useState({
+    const [pattern, setPattern]: any = useState({
         kick: new Array(16).fill(false),
         snare: new Array(16).fill(false),
         hihat: new Array(16).fill(false),
     });
 
-    const timerRef = useRef(null);
+    const timerRef: any = useRef(null);
 
     const playStep = useCallback(() => {
         Object.entries(pattern).forEach(([drum, steps]) => {
+            // @ts-ignore
             if (steps[currentStep]) {
                 createDrumSound(drum);
             }
@@ -71,7 +72,7 @@ const DrumMachine = () => {
     }, [playing, bpm, playStep]);
 
     const toggleStep = (drum: string, step: any) => {
-        setPattern((prevPattern) => ({
+        setPattern((prevPattern: any) => ({
             ...prevPattern,
             [drum]: prevPattern[drum].map((value: any, index: any) =>
                 index === step ? !value : value

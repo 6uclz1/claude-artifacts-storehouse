@@ -12,7 +12,7 @@ const CompoundInterestCalculator = () => {
   const [data, setData] = useState([]);
 
   const calculateCompoundInterest = () => {
-    const newData = [];
+    const newData: any = [];
     let currentAmount = principal;
     let currentAmountNoInterest = principal;
     for (let i = 0; i <= years; i++) {
@@ -83,7 +83,7 @@ const CompoundInterestCalculator = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" label={{ value: '年数', position: 'insideBottomRight', offset: -10 }} />
                 <YAxis label={{ value: '金額 (万円)', angle: -90, position: 'insideLeft' }} />
-                <Tooltip formatter={(value) => `${value.toFixed(1)}万円`} />
+                <Tooltip formatter={(value: any) => `${value.toFixed(1)}万円`} />
                 <Legend />
                 <Line type="monotone" dataKey="amount" name="複利運用" stroke="#8884d8" />
                 <Line type="monotone" dataKey="amountNoInterest" name="金利0%" stroke="#82ca9d" />

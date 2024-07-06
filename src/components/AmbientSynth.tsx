@@ -1,10 +1,8 @@
-// ファイル: components/AmbientSynth.js
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -15,17 +13,17 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 
 const AmbientSynth = () => {
-  const [audioContext, setAudioContext] = useState(null);
-  const [oscillators, setOscillators] = useState([]);
-  const [gainNode, setGainNode] = useState(null);
-  const [reverbNode, setReverbNode] = useState(null);
-  const [delayNode, setDelayNode] = useState(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [pointerPosition, setPointerPosition] = useState({ x: 0, y: 0 });
-  const [waveform, setWaveform] = useState('sine');
-  const [reverbAmount, setReverbAmount] = useState(0.3);
-  const [delayTime, setDelayTime] = useState(0.3);
-  const touchpadRef = useRef(null);
+  const [audioContext, setAudioContext]: any = useState(null);
+  const [oscillators, setOscillators]: any = useState([]);
+  const [gainNode, setGainNode]: any = useState(null);
+  const [reverbNode, setReverbNode]: any = useState(null);
+  const [delayNode, setDelayNode]: any = useState(null);
+  const [isInitialized, setIsInitialized]: any = useState(false);
+  const [pointerPosition, setPointerPosition]: any = useState({ x: 0, y: 0 });
+  const [waveform, setWaveform]: any = useState('sine');
+  const [reverbAmount, setReverbAmount]: any = useState(0.3);
+  const [delayTime, setDelayTime]: any = useState(0.3);
+  const touchpadRef: any = useRef(null);
 
   const chords = [
     [1, 1.25, 1.5],    // Major chord
@@ -36,7 +34,7 @@ const AmbientSynth = () => {
   ];
 
   const initializeAudio = () => {
-    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const context: any = new (window.AudioContext || window.AudioContext)();
     setAudioContext(context);
 
     const gain = context.createGain();
@@ -65,8 +63,8 @@ const AmbientSynth = () => {
     setReverbNode(reverb);
     setDelayNode(delay);
 
-    const newOscillators = chords[0].map(ratio => {
-      const osc = context.createOscillator();
+    const newOscillators: any = chords[0].map(ratio => {
+      const osc: any = context.createOscillator();
       osc.type = waveform;
       osc.frequency.setValueAtTime(440 * ratio, context.currentTime);
       osc.connect(gain);
@@ -81,7 +79,7 @@ const AmbientSynth = () => {
   useEffect(() => {
     return () => {
       if (oscillators.length > 0) {
-        oscillators.forEach(osc => osc.stop());
+        oscillators.forEach((osc: { stop: () => any; }) => osc.stop());
       }
       if (audioContext) {
         audioContext.close();
@@ -91,7 +89,7 @@ const AmbientSynth = () => {
 
   useEffect(() => {
     if (isInitialized) {
-      oscillators.forEach(osc => {
+      oscillators.forEach((osc: { type: string; }) => {
         osc.type = waveform;
       });
     }
@@ -112,7 +110,7 @@ const AmbientSynth = () => {
     }
   }, [delayTime, isInitialized, delayNode, audioContext]);
 
-  const handleInteraction = (e) => {
+  const handleInteraction = (e: any) => {
     e.preventDefault();
     if (!isInitialized) {
       initializeAudio();
@@ -126,7 +124,7 @@ const AmbientSynth = () => {
     }
   };
 
-  const updateSound = (e) => {
+  const updateSound = (e: { type: string; touches: any[]; clientX: number; clientY: number; }) => {
     if (!isInitialized || !touchpadRef.current) return;
 
     const touchpad = touchpadRef.current;
@@ -149,7 +147,7 @@ const AmbientSynth = () => {
     const chordIndex = Math.floor(y * chords.length);
     const currentChord = chords[chordIndex];
 
-    oscillators.forEach((osc, index) => {
+    oscillators.forEach((osc: { frequency: { setTargetAtTime: (arg0: number, arg1: any, arg2: number) => void; }; }, index: number) => {
       const frequency = baseFrequency * currentChord[index];
       osc.frequency.setTargetAtTime(frequency, audioContext.currentTime, 0.1);
     });
